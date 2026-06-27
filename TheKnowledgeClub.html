@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Knowledge Club - Hub</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --text-color: #f8fafc;
+            --accent-purple: #7A00FF;
+            --accent-blue: #38bdf8;
+            --card-bg: #1e293b;
+            --orange-brand: #FF7F00;
+            --nav-bg: #0f172a;
+            --border-color: #1e293b;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        /* Header Navigation Module */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: var(--nav-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            z-index: 100;
+        }
+
+        .topleft {
+            display: flex;
+            align-items: center;
+        }
+
+        .topleft img {
+            border-radius: 6px;
+            object-fit: contain;
+        }
+
+        .mainmenu {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menuelement a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .menuelement a:hover, .menuelement.active a {
+            color: var(--accent-blue);
+        }
+
+        /* Subtitle Engine Frame Layout */
+        .rotating-text-shell {
+            margin-top: 35px;
+            margin-bottom: 35px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .whitetext {
+            display: inline;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .words-stack {
+            display: inline-block;
+            position: relative;
+            margin-left: 6px;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        .word {
+            display: none;
+        }
+
+        .word.active {
+            display: inline;
+        }
+
+        /* Micro-Color Palette Styles */
+        .alizarin { color: #e74c3c; }
+        .wisteria { color: #8e44ad; }
+        .peter-river { color: #3498db; }
+        .emerald { color: #2ecc71; }
+
+        /* Content Container */
+        .content-shell {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            position: relative;
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.25s ease-out;
+        }
+
+        .content-shell.visible {
+            opacity: 1;
+        }
+
+        /* Consolidated Typography Elements */
+        h1 {
+            color: var(--orange-brand);
+            font-size: 1.8em;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--accent-purple);
+            font-size: 1.4rem;
+            margin-top: 1.5em;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        p {
+            line-height: 1.7;
+            color: #cbd5e1;
+            font-size: 1.05rem;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            text-align: left;
+            padding-left: 20px;
+            color: #cbd5e1;
+        }
+
+        li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        /* Component Details: Founder View */
+        .founder-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 12px;
+            margin: 20px auto;
+            display: block;
+            border: 2px solid var(--border-color);
+            object-fit: contain;
+        }
+
+        .intro-text {
+            font-size: 1.15rem;
+            font-style: italic;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        /* Component Details: Shared Search Layouts */
+        .description {
+            font-size: 1.1em;
+            color: #cbd5e1;
+            text-align: center;
+            max-width: 680px;
+            margin: 20px auto;
+        }
+
+        .search-form-block {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            font-size: 1em;
+            background-color: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 5px;
+            color: var(--text-color);
+            text-align: center;
+            outline: none;
+            margin-bottom: 15px;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .search-button {
+            padding: 10px 24px;
+            font-size: 1em;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Form Controls for Focused Search Grid */
+        .form-section {
+            background-color: #111827;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-section label.section-title {
+            color: var(--accent-blue);
+            font-weight: bold;
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--card-bg);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+            user-select: none;
+            transition: border-color 0.2s;
+        }
+
+        .checkbox-label:hover {
+            border-color: #334155;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            margin: 0;
+            accent-color: var(--accent-blue);
+        }
+
+        .subject-glossary {
+            margin-top: 20px;
+            border-top: 1px dashed #334155;
+            padding-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .subject-glossary p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+            text-align: left;
+        }
+
+        .subject-glossary b {
+            color: var(--text-color);
+        }
+
+        /* Component Details: Vision and Impact Layout Customizations */
+        .quote {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--accent-blue);
+            margin: 20px auto;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .center-image {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin: 25px auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .testimonials {
+            background-color: #111827;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .testimonial {
+            font-style: italic;
+            color: #cbd5e1;
+            padding-left: 15px;
+            border-left: 3px solid var(--orange-brand);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Dynamic Search Results Container System */
+        .card-container {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: left;
+        }
+
+        .resource-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .resource-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .resource-card h2 {
+            margin: 0 0 15px 0;
+            color: var(--orange-brand);
+            font-size: 1.4em;
+            border-bottom: 1px dashed #334155;
+            padding-bottom: 5px;
+        }
+
+        .resource-card p {
+            margin: 0 0 8px 0;
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .resource-card strong {
+            color: var(--accent-blue);
+        }
+
+        .resource-link {
+            color: var(--orange-brand);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #e74c3c;
+            font-style: italic;
+            margin-top: 20px;
+        }
+
+        /* View State Hidden Controls */
+        .view-panel {
+            display: none;
+        }
+
+        .view-panel.active-panel {
+            display: block;
+        }
+
+        /* Mobile Breakpoint System */
+        @media (max-width: 768px) {
+            .header-bar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .mainmenu {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+            h1 { font-size: 1.5em; }
+            h2 { font-size: 1.2rem; }
+            .rotating-text-shell { font-size: 1.4rem; }
+            .checkbox-group { flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bar">
+        <div class="topleft">
+            <img src="Gemini_Generated_Image_861ikv861ikv861i.png" width="65" height="65" alt="The Knowledge Club Logo">
+        </div>
+        
+        <ul class="mainmenu" id="mainmenu">
+            <li class="menuelement active" id="nav-about"><a onclick="switchActiveView('about')">About</a></li>
+            <li class="menuelement" id="nav-founder"><a onclick="switchActiveView('founder')">Founder's Corner</a></li>
+            <li class="menuelement" id="nav-bsearch"><a onclick="switchActiveView('bsearch')">Broad Search</a></li>
+            <li class="menuelement" id="nav-fsearch"><a onclick="switchActiveView('fsearch')">Focused Search</a></li>
+            <li class="menuelement" id="nav-vision"><a onclick="switchActiveView('vision')">Vision and Impact</a></li>
+        </ul>
+
+        <div></div>
+    </header>
+
+    <div class="rotating-text-shell">
+        <p class="whitetext">The Knowledge Club </p>
+        <div class="words-stack">
+            <span class="word alizarin active">personalizes.</span>
+            <span class="word wisteria">counsels.</span>
+            <span class="word peter-river">inspires.</span>
+            <span class="word emerald">explains.</span>
+            <span class="word alizarin">finds.</span>
+            <span class="word wisteria">creates.</span>
+            <span class="word peter-river">simplifies.</span>
+        </div>
+    </div>
+
+    <main class="content-shell" id="content">
+        
+        <div id="view-about" class="view-panel active-panel">
+            <h1>About Us - The Knowledge Club</h1>
+            <p>
+                The Knowledge Club is an innovative, AI-driven platform dedicated to making education more accessible, personalized, and effective for K-12 students in British Columbia and beyond. Recognizing the diversity of learning needs and the existing gaps in K-12 education, we provide tailored learning resources and support that allow each student to thrive.
+            </p>
+
+            <h2>What We Do</h2>
+            <p>
+                The Knowledge Club offers a comprehensive platform for students, teachers, and parents to find high-quality educational resources efficiently. Our tools include:
+            </p>
+            <ul>
+                <li>
+                    <strong>Broad and Focused Search Options</strong>: Whether users are exploring a wide range of resources or looking for specific materials, our search options help streamline and refine the search process.
+                </li>
+            </ul>
+
+            <h2>Why We're Unique</h2>
+            <p>
+                Unlike existing resources, The Knowledge Club is free, localized, and exclusively designed to cater to K-12 needs, focusing on curated, relevant content that supports both foundational and advanced learning requirements. Our platform stands out because we connect users to valuable resources, not just generic tools, making learning accessible and meaningful.
+            </p>
+
+            <h2>Looking Ahead</h2>
+            <p>
+                Our journey is just beginning. As we grow, The Knowledge Club aims to expand across Canada, continuously improving through user feedback, refining our AI-driven insights, and developing dedicated spaces for teachers, parents, and students to meet their unique needs.
+            </p>
+            
+            <p style="text-align: center; margin-top: 25px; font-weight: bold; color: var(--accent-blue);">
+                Together, we are making personalized learning accessible to all - because every student deserves the opportunity to thrive.
+            </p>
+        </div>
+
+        <div id="view-founder" class="view-panel">
+            <h1>Meet the Founder - Manpreet Sandhu</h1>
+            
+            <img src="VolunteerPhoto.jpeg" alt="Manpreet Sandhu: The Founder" class="founder-image">
+            
+            <p class="intro-text">
+                Hello, I'm Manpreet Sandhu, the founder of The Knowledge Club. From a young age, I've been driven by a passion for math, coding, and AI, and I've always been fascinated by how technology can solve real-world problems.
+            </p>
+
+            <h2>My Inspiration</h2>
+            <p>
+                Like many students, I found that the traditional one-size-fits-all approach to education didn't align with my learning style. After seeing the time and effort my parents put into finding resources that fit my needs, I realized that many other students encounter similar challenges. This experience inspired me to create The Knowledge Club - a platform that provides personalized learning plans and curated resources to help each student reach their full potential.
+            </p>
+
+            <h2>Our Vision</h2>
+            <p>
+                My goal is to make education more accessible, equitable, and tailored to individual learning needs. Through The Knowledge Club, I aim to show students, parents, and educators how AI can enhance education by creating custom learning experiences that honor each learner's unique strengths and challenges.
+            </p>
+
+            <h2>A Message to You</h2>
+            <p>
+                Thank you for visiting The Knowledge Club! I hope it becomes a valuable tool in your educational journey. Together, we are shaping the future of personalized learning.
+            </p>
+        </div>
+
+        <div id="view-bsearch" class="view-panel">
+            <h1>Broad Search</h1>
+            <p class="description">
+                Welcome to Broad Search! Here, you can find a wide range of educational, extracurricular, and healthy lifestyle resources. Search terms like "cooking", "volunteer", "exercise", "science world", "scholarships", "history", "football", "robotics", "psychology", "oceans", "indigenous", or "neurodivergent" to see our expansive collection.
+            </p>
+            
+            <div class="search-form-block">
+                <form id="broadSearchForm">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search math, art, law, physics, career, cooking, special education..." required>
+                    <br>
+                    <input type="submit" value="Find Resources" class="search-button">
+                </form>
+            </div>
+
+            <div class="card-container" id="searchResults"></div>
+        </div>
+
+        <div id="view-fsearch" class="view-panel">
+            <h1>Focused Search</h1>
+        
+            <p class="description">
+                The Focused Search feature of The Knowledge Club is designed to help you find precise resources that match your specific educational needs. If you’re looking to narrow down your options and avoid information overload, Focused Search provides tailored results based on selected criteria, making it easier to find the exact resources you need.
+            </p>
+            <p class="intro-text" style="font-size: 0.95rem; margin-bottom: 25px; color: var(--accent-blue);">
+                *Please select at least one option from each of the following categories to refine your search effectively.
+            </p>
+
+            <form id="focusedSearchForm">
+                
+                <div class="form-section">
+                    <label class="section-title">* Select Grades to Search For:</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label"><input type="checkbox" value="1" name="grade"> 1</label>
+                        <label class="checkbox-label"><input type="checkbox" value="2" name="grade"> 2</label>
+                        <label class="checkbox-label"><input type="checkbox" value="3" name="grade"> 3</label>
+                        <label class="checkbox-label"><input type="checkbox" value="4" name="grade"> 4</label>
+                        <label class="checkbox-label"><input type="checkbox" value="5" name="grade"> 5</label>
+                        <label class="checkbox-label"><input type="checkbox" value="6" name="grade"> 6</label>
+                        <label class="checkbox-label"><input type="checkbox" value="7" name="grade"> 7</label>
+                        <label class="checkbox-label"><input type="checkbox" value="8" name="grade"> 8</label>
+                        <label class="checkbox-label"><input type="checkbox" value="9" name="grade"> 9</label>
+                        <label class="checkbox-label"><input type="checkbox" value="10" name="grade"> 10</label>
+                        <label class="checkbox-label"><input type="checkbox" value="11" name="grade"> 11</label>
+                        <label class="checkbox-label"><input type="checkbox" value="12" name="grade"> 12</label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label class="section-title">* Select Resource Type:</label>
+                    <div class="checkbox-group" style="flex-direction: column; align-items: flex-start;">
+                        <label class="checkbox-label"><input type="checkbox" value="Free Learning and Enrichment Resources" name="type"> Free Learning and Enrichment Resources</label>
+                        <label class="checkbox-label"><input type="checkbox" value="Extracurriculars, Clubs and Volunteer Opportunities" name="type"> Extracurriculars, Clubs and Volunteer Opportunities</label>
+                        <label class="checkbox-label"><input type="checkbox" value="Enrichment/Alternative Courses and Programs" name="type"> Enrichment/Alternative Courses and Programs</label>
+                        <label class="checkbox-label"><input type="checkbox" value="Financial Awards and Support" name="type"> Financial Awards and Support</label>
+                        <label class="checkbox-label"><input type="checkbox" value="Competitions/Contests and Challenge Opportunities" name="type"> Competitions/Contests and Challenge Opportunities</label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label class="section-title">* Select Resource Subject:</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label"><input type="checkbox" id="STEM" value="STEM" name="subject" onclick="update_children(this)"> STEM</label>
+                        <label class="checkbox-label"><input type="checkbox" id="Arts" value="Arts" name="subject" onclick="update_children(this)"> Arts</label>
+                        <label class="checkbox-label"><input type="checkbox" id="SocialSciences" value="Social Sciences & Philosophy" name="subject" onclick="update_children(this)"> Social Sciences & Philosophy</label>
+                        <label class="checkbox-label"><input type="checkbox" id="Environmental" value="Environmental & Natural Sciences" name="subject" onclick="update_children(this)"> Environmental & Natural Sciences</label>
+                        <label class="checkbox-label"><input type="checkbox" id="Leadership" value="Leadership & Personal Development" name="subject" onclick="update_children(this)"> Leadership & Personal Development</label>
+                        <label class="checkbox-label"><input type="checkbox" id="Cultural" value="Cultural & Language Programs" name="subject" onclick="update_children(this)"> Cultural & Language Programs</label>
+                        <label class="checkbox-label"><input type="checkbox" id="Sports" value="Sports & Adventure" name="subject" onclick="update_children(this)"> Sports & Adventure</label>
+                        <label class="checkbox-label"><input type="checkbox" id="Equity" value="Equity & Access" name="subject" onclick="update_children(this)"> Equity & Access</label>
+                        <label class="checkbox-label"><input type="checkbox" id="Multiple" value="Multiple Areas K-12" name="subject" onclick="update_children(this)"> Multiple Areas K-12</label>
+                    </div>
+
+                    <div class="subject-glossary">
+                        <p><b>STEM:</b> Mathematics, Science, Technology, Engineering, Computer Science, Robotics, Coding, Physics, Chemistry.</p>
+                        <p><b>Arts:</b> Visual Arts, Performing Arts, Music, Creative Writing, Theater.</p>
+                        <p><b>Social Sciences & Philosophy:</b> Social Studies, History, Law, Psychology, Economics, Business, Geography, Civics.</p>
+                        <p><b>Environmental & Natural Sciences:</b> Environmental Science, Ecology, Nature Studies, Oceans, Sustainability.</p>
+                        <p><b>Leadership & Personal Development:</b> Volunteer Network, Leadership, Community Service, Financial Literacy, Career Prep, Scholarships, Graduation Funding.</p>
+                        <p><b>Cultural & Language Programs:</b> Indigenous Studies, Language Learning, French Immersion, ESL.</p>
+                        <p><b>Sports & Adventure:</b> Cooking, Nutrition, Exercise, Healthy Living, Football, Basketball, Tennis, Soccer, Volleyball, Swimming, Athletics, World Cup Events.</p>
+                        <p><b>Equity & Access:</b> Financial Support, Disability & Accessibility, Special Education, Neurodivergent Resources.</p>
+                        <p><b>Multiple Areas K-12:</b> School boards, homework help sites, remote curricula, alternative learning models.</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <input type="submit" value="Find Specific Resources" class="search-button">
+                </div>
+            </form>
+
+            <div class="card-container" id="focusedSearchResults"></div>
+        </div>
+
+        <div id="view-vision" class="view-panel">
+            <h1>Vision and Impact</h1>
+            <p class="quote">“Every child can thrive”</p>
+            <p>
+                Every student has the potential to succeed, and at The Knowledge Club, we are committed to ensuring personalized learning is accessible to all. Inspired by local needs, our mission is to bridge skill gaps observed across Canada and address productivity challenges by equipping students with the skills they need for the future.
+            </p>
+
+            <h2>Our Impact</h2>
+            <p>
+                Initial surveys indicate a strong demand from parents and teachers who see immense value in the time and resource efficiency that The Knowledge Club brings. Studies show that tools like ours can significantly reduce teacher workload, enabling more one-on-one interaction with students and enriching the educational experience.
+            </p>
+            
+            <img src="static/animated_rating.svg" alt="User Satisfaction Rating" class="center-image">
+            <p class="quote" style="font-size: 1rem; color: var(--text-muted); font-weight: normal;">
+                Tested by parents, teachers, and other qualified individuals, we maintain an overwhelmingly positive rating.
+            </p>
+
+            <h2>What People Say</h2>
+            <div class="testimonials">
+                <p class="testimonial">“I think we have nothing like this.”</p>
+                <p class="testimonial">“It is a very valuable resource for every student.”</p>
+                <p class="testimonial">“A single website with local information does not exist.”</p>
+                <p class="testimonial">“Kids and parents need a trusted resource center.”</p>
+                <p class="testimonial">“I found the page and information highly valuable and comprehensive.”</p>
+                <p class="testimonial">“The Knowledge Club fulfills the need for personalized learning paths for students.”</p>
+                <p class="testimonial">“The curation of resources is educationally focused and beneficial.”</p>
+                <p class="testimonial">“It provides comprehensive insight into personalized learning plans.”</p>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // 1. K-12 MASTER RESOURCE DATABASE
+        const RESOURCE_DATABASE = [
+            // --- COOKING & NUTRITION ---
+            { title: "Culinary Learning", name: "Kids Look Listen Cook Initiative", subject: "Cooking, Recipes & Kitchen Science", grades: "1,2,3,4,5,6,7,8,9", organizer: "Food Literacy Canada", location: "Online Portal", eligibility: "Free Open Access", area: "Cooking & Nutrition", broadArea: "Sports & Adventure", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.foodliteracycenter.org", keywords: ["cooking", "nutrition", "baking", "recipes", "food literacy", "healthy eating", "kitchen science", "chef", "meals", "diet"] },
+            { title: "Nutrition Course", name: "Healthy Eating for Youth Blueprint", subject: "Nutrition Education & Meal Planning", grades: "6,7,8,9,10,11,12", organizer: "BC Health Link Curriculum Services", location: "Online / Public Classrooms", eligibility: "Free Toolkit Access", area: "Healthy Living", broadArea: "Sports & Adventure", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.healthlinkbc.ca", keywords: ["nutrition", "diet", "cooking", "healthy living", "vitamins", "food guide", "meal planning", "calories", "wellness"] },
+
+            // --- EXERCISE & HEALTHY LIVING ---
+            { title: "Fitness Program", name: "ParticipACTION Youth Fitness Network", subject: "Exercise Exercises & Daily Physical Agility", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "ParticipACTION Canada", location: "Digital App & School Nodes", eligibility: "Free Public Signups", area: "Exercise & Fitness", broadArea: "Sports & Adventure", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.participaction.com", keywords: ["exercise", "exercising", "fitness", "workout", "cardio", "healthy living", "running", "gym", "agility", "sports", "physical education"] },
+            { title: "Mental Wellness Support", name: "Kelty Mental Health Resource Matrix", subject: "Healthy Living & Mindfulness Systems", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "BC Children's Hospital Hub", location: "Vancouver / Province-wide Online", eligibility: "Free Student and Caregiver Access", area: "Healthy Living & Mindfulness", broadArea: "Sports & Adventure", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://keltymentalhealth.ca", keywords: ["healthy living", "mindfulness", "mental health", "wellness", "sleep hygiene", "anxiety help", "stress relief", "meditation"] },
+
+            // --- VOLUNTEER RESOURCES ---
+            { title: "Volunteer Hub", name: "Volunteer BC Youth Connection", subject: "Community Volunteering & Service Hours", grades: "8,9,10,11,12", organizer: "Volunteer BC Association Network", location: "Province-wide Database", eligibility: "High School Students seeking graduation credits", area: "Volunteer Opportunities", broadArea: "Leadership & Personal Development", category: "Extracurriculars, Clubs and Volunteer Opportunities", matchLevel: "Best", link: "https://volunteerbc.bc.ca", keywords: ["volunteer", "volunteering", "community service", "volunteer resources", "charity", "nonprofit", "service hours", "grad requirements", "helping"] },
+            { title: "Environmental Volunteerism", name: "Surrey Youth Green Teams", subject: "Environmental Restoration & Volunteer Service", grades: "7,8,9,10,11,12", organizer: "Lower Mainland Green Teams", location: "Surrey & Greater Vancouver Parks", eligibility: "All youth welcome, drop-in groups", area: "Ecology Volunteering", broadArea: "Leadership & Personal Development", category: "Extracurriculars, Clubs and Volunteer Opportunities", matchLevel: "Best", link: "https://www.greenteamscanada.ca", keywords: ["volunteer", "environmental", "nature conservation", "tree planting", "volunteer resources", "community service", "parks", "surrey"] },
+
+            // --- STEM ---
+            { title: "Science Museum", name: "Science World British Columbia", subject: "STEM & Interactive Science", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Science World at TELUS World of Science", location: "Vancouver, BC", eligibility: "Open to Students & School Outings", area: "Experiential Exhibits", broadArea: "STEM", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.scienceworld.ca", keywords: ["science world", "science", "stem", "physics", "chemistry", "biology", "experiments", "vancouver dome", "field trips", "museum"] },
+            { title: "Coding Network", name: "BC Youth Coding Hub", subject: "STEM & Computer Programming", grades: "3,4,5,6,7,8,9,10,11,12", organizer: "Tech Innovators BC", location: "Online / Vancouver Nodes", eligibility: "Beginners Welcome", area: "Computer Science", broadArea: "STEM", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.bcyouthcoding.org", keywords: ["coding", "programming", "stem", "computer science", "python", "html", "scratch", "javascript", "software", "ai"] },
+            { title: "Chess Association", name: "BC Junior Chess Federation Hub", subject: "Strategy, Tournaments & Critical Thinking", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "BCJCF Committee", location: "Various Meetups / Online Tourneys", eligibility: "Open to all novice and ranked junior players", area: "Strategy Games", broadArea: "STEM", category: "Competitions/Contests and Challenge Opportunities", matchLevel: "Good", link: "https://www.bcchess.ca", keywords: ["chess", "board games", "strategy", "tournaments", "checkmate", "logic games"] },
+            { title: "Mathematics Challenge", name: "CEMC Math Contests", subject: "Advanced Math Competitions & Problem Solving", grades: "5,6,7,8,9,10,11,12", organizer: "Centre for Education in Mathematics and Computing", location: "University of Waterloo / Distributed Schools", eligibility: "School Registration", area: "Mathematics", broadArea: "STEM", category: "Competitions/Contests and Challenge Opportunities", matchLevel: "Best", link: "https://www.cemc.uwaterloo.ca", keywords: ["math", "mathematics", "cemc", "waterloo", "contests", "competition", "gauss", "pascal", "euclid"] },
+            { title: "Robotics Program", name: "FIRST Robotics BC Alliances", subject: "Robotics Design, Engineering & Autonomous Programming", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "FIRST Robotics British Columbia", location: "Regional Schools & Labs", eligibility: "Open Registration Team Signups", area: "Robotics & Technology", broadArea: "STEM", category: "Extracurriculars, Clubs and Volunteer Opportunities", matchLevel: "Best", link: "https://firstbc.org", keywords: ["robotics", "engineering", "technology", "stem", "coding", "lego league", "first", "robots", "software"] },
+            { title: "Physics Circle", name: "UBC Physics Circle Framework", subject: "Theoretical Physics & Advanced Mechanics Labs", grades: "10,11,12", organizer: "University of British Columbia Department of Physics", location: "UBC Vancouver Campus / Hybrid", eligibility: "High School Senior Recommendations", area: "Physics", broadArea: "STEM", category: "Enrichment/Alternative Courses and Programs", matchLevel: "Best", link: "https://www.physics.ubc.ca", keywords: ["physics", "science", "mechanics", "stem", "ubc", "advanced physics", "quantum", "astronomy"] },
+            { title: "Chemistry Olympiad", name: "Canadian Chemistry Olympiad Prep", subject: "Advanced Organic Chemistry & Analytical Labs", grades: "11,12", organizer: "Chemical Institute of Canada", location: "Online / University Nodes", eligibility: "High school Chemistry Students", area: "Chemistry", broadArea: "STEM", category: "Competitions/Contests and Challenge Opportunities", matchLevel: "Best", link: "https://www.cheminst.ca", keywords: ["chemistry", "science", "olympiad", "stem", "chemical", "lab safety", "periodic table"] },
+
+            // --- ARTS ---
+            { title: "Youth Arts Institute", name: "Arts Umbrella Visual Programs", subject: "Visual Arts, Painting, Sculpture & Media Design", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Arts Umbrella Association", location: "Granville Island & Surrey Centres", eligibility: "Open Registration / Financial Assistance Options", area: "Visual Arts", broadArea: "Arts", category: "Enrichment/Alternative Courses and Programs", matchLevel: "Best", link: "https://www.artsumbrella.com", keywords: ["arts", "visual arts", "painting", "sculpture", "drawing", "media design", "sketching", "creativity"] },
+            { title: "Music Conservatory", name: "VSO School of Music Ensembles", subject: "Music Training, Orchestral Strings & Band Performance", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Vancouver Symphony Orchestra School", location: "Downtown Vancouver Studio", eligibility: "Audition and General Streams Available", area: "Music", broadArea: "Arts", category: "Extracurriculars, Clubs and Volunteer Opportunities", matchLevel: "Best", link: "https://vsoschoolofmusic.ca", keywords: ["music", "orchestra", "vso", "violin", "piano", "band", "singing", "choir", "performing arts"] },
+            { title: "Creative Writing Contest", name: "Jessamy Stursberg Poetry Prize", subject: "Creative Writing, Poetry Composition & Literary Critique", grades: "7,8,9,10,11,12", organizer: "League of Canadian Poets", location: "National Submissions Node", eligibility: "High School Students under age 19", area: "Creative Writing", broadArea: "Arts", category: "Competitions/Contests and Challenge Opportunities", matchLevel: "Best", link: "https://poets.ca", keywords: ["creative writing", "poetry", "literature", "writing", "essay", "english", "contest", "books"] },
+            { title: "Theater Showcase", name: "Bard on the Beach Youth Workshops", subject: "Theater Expression, Shakespearean Drama & Monologue Study", grades: "4,5,6,7,8,9,10,11,12", organizer: "Bard on the Beach Festival", location: "Vanier Park Tents / Studios", eligibility: "Young performers looking for acting training", area: "Theater", broadArea: "Arts", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://bardonthebeach.org", keywords: ["theater", "theatre", "drama", "acting", "monologue", "performing arts", "bard", "shakespeare"] },
+
+            // --- SOCIAL SCIENCES & PHILOSOPHY ---
+            { title: "Curriculum Portal", name: "BC Social Studies & History Resource Hub", subject: "Social Studies & Canadian History", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "BC Ministry of Education Portal", location: "Online", eligibility: "Free Access", area: "History & Geography", broadArea: "Social Sciences & Philosophy", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.curriculum.gov.bc.ca", keywords: ["social studies", "history", "canadian history", "geography", "government", "bc heritage", "civics", "politics", "citizenship"] },
+            { title: "Debate League", name: "BC Speech and Debate Youth Academy", subject: "Public Speaking, Rhetoric and Civic Argumentation", grades: "5,6,7,8,9,10,11,12", organizer: "BC Speech and Debate Association", location: "Vancouver / Digital Forums", eligibility: "School teams and open individual registrations", area: "Public Speaking", broadArea: "Social Sciences & Philosophy", category: "Competitions/Contests and Challenge Opportunities", matchLevel: "Best", link: "https://www.bcsda.org", keywords: ["debate", "public speaking", "speech", "rhetoric", "presentation", "politics", "social studies"] },
+            { title: "Youth Mock Trial", name: "BC Law Day Mock Trial Circuit", subject: "Law, Legal Defense Strategy & Civic Systems", grades: "10,11,12", organizer: "Canadian Bar Association BC Branch", location: "Regional Law Courts", eligibility: "High School Team Enrolment", area: "Law", broadArea: "Social Sciences & Philosophy", category: "Competitions/Contests and Challenge Opportunities", matchLevel: "Best", link: "https://www.cbabc.org", keywords: ["law", "mock trial", "legal", "court", "civics", "justice", "social sciences", "attorney"] },
+            { title: "Economics Challenge", name: "Junior Achievement BC Business Matrix", subject: "Economics, Financial Literacy & Entrepreneurship Plans", grades: "4,5,6,7,8,9,10,11,12", organizer: "JA British Columbia Network", location: "School Delivery / Online Digital Portal", eligibility: "Free School and Home Learning Modules", area: "Economics & Business", broadArea: "Social Sciences & Philosophy", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://jabc.ca", keywords: ["economics", "business", "entrepreneur", "financial literacy", "jabc", "finance", "stocks", "marketing"] },
+            { title: "Geography Olympiad", name: "Canadian Geographic Challenge", subject: "Geography, Cartography & Spatial Environmental Awareness", grades: "4,5,6,7,8,9,10", organizer: "Royal Canadian Geographical Society", location: "Online Competition Stage", eligibility: "Students under grade 11", area: "Geography", broadArea: "Social Sciences & Philosophy", category: "Competitions/Contests and Challenge Opportunities", matchLevel: "Best", link: "https://online.canadiangeographic.ca", keywords: ["geography", "cartography", "maps", "social sciences", "world facts", "geographical"] },
+
+            // --- ENVIRONMENTAL & NATURAL SCIENCES ---
+            { title: "Oceans Academy", name: "Ocean Wise Digital Education Lab", subject: "Oceans Exploration, Marine Ecology & Environmental Science", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Ocean Wise Conservation Association", location: "Vancouver Aquarium / Online Stream", eligibility: "Free Open Access Frameworks", area: "Oceans", broadArea: "Environmental & Natural Sciences", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://ocean.org", keywords: ["oceans", "marine biology", "ecology", "environmental science", "fish", "nature studies", "sustainability"] },
+            { title: "Sustainability Framework", name: "Beaty Biodiversity Youth Outreach", subject: "Ecology, Nature Studies & Specimen Preservation", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Beaty Biodiversity Museum at UBC", location: "UBC Vancouver Campus", eligibility: "Open Public Workshops", area: "Ecology", broadArea: "Environmental & Natural Sciences", category: "Enrichment/Alternative Courses and Programs", matchLevel: "Best", link: "https://beatymuseum.ubc.ca", keywords: ["ecology", "nature studies", "sustainability", "environmental science", "plants", "animals", "ubc", "museum"] },
+
+            // --- LEADERSHIP & PERSONAL DEVELOPMENT ---
+            { title: "Scholarship Program", name: "BC Excellence Graduation Scholarships", subject: "Financial Support & Academic Excellence", grades: "11,12", organizer: "BC Ministry of Education and Child Care", location: "Province-wide Portal", eligibility: "Graduating Grade 12 Students meeting criteria", area: "Tuition Grants", broadArea: "Leadership & Personal Development", category: "Financial Awards and Support", matchLevel: "Best", link: "https://www2.gov.bc.ca", keywords: ["scholarships", "high school students", "financial support", "awards", "bursary", "graduation grant", "university funding", "grade 12", "money"] },
+            { title: "Scholarship Fund", name: "The Loran Award for High School Seniors", subject: "National Merit and Leadership Awards", grades: "12", organizer: "Loran Scholars Foundation", location: "National Evaluation (BC Eligible)", eligibility: "High school seniors with high integrity and service records", area: "Undergraduate Tuition Support", broadArea: "Leadership & Personal Development", category: "Financial Awards and Support", matchLevel: "Best", link: "https://www.loranscholar.ca", keywords: ["scholarships", "high school students", "loran award", "financial support", "university scholarship", "grade 12", "leadership grant"] },
+            { title: "Career Discovery Hub", name: "WorkBC Youth Employment Engine", subject: "Career Prep, Resume Architecture & Skills Training", grades: "9,10,11,12", organizer: "Government of British Columbia Employment Portal", location: "Online Matrix Network", eligibility: "Youth Career Exploration Access", area: "Career Prep", broadArea: "Leadership & Personal Development", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.workbc.ca", keywords: ["career prep", "jobs", "resume", "interview", "skills training", "employment", "leadership", "workbc"] },
+            { title: "Leadership Guild", name: "Duke of Edinburgh International Award", subject: "Leadership, Community Service & Outdoor Resilience", grades: "9,10,11,12", organizer: "The Duke of Edinburgh Canada Council", location: "Self-paced Regional Portfolios", eligibility: "Youth aged 14 to 24", area: "Leadership", broadArea: "Leadership & Personal Development", category: "Extracurriculars, Clubs and Volunteer Opportunities", matchLevel: "Best", link: "https://www.dukeofed.org", keywords: ["leadership", "community service", "volunteer network", "outdoor", "award", "personal development"] },
+
+            // --- CULTURAL & LANGUAGE PROGRAMS ---
+            { title: "Indigenous Learning Portal", name: "First Peoples Cultural Gateway", subject: "Indigenous Studies, Language Arts & BC First Nations Heritage", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "First Peoples' Cultural Council", location: "Online Portal Tools", eligibility: "Free Open Access System", area: "Indigenous Studies", broadArea: "Cultural & Language Programs", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.fpcc.ca", keywords: ["indigenous studies", "first nations", "heritage", "language learning", "bc culture", "history", "languages"] },
+            { title: "French Immersion Toolkit", name: "CPF French Language Enrichment Systems", subject: "French Immersion Accent Training & Conversational Fluency", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Canadian Parents for French BC & Yukon", location: "Community Chapters / Digital Network", eligibility: "Open to Students learning French", area: "French Immersion", broadArea: "Cultural & Language Programs", category: "Enrichment/Alternative Courses and Programs", matchLevel: "Best", link: "https://bc-yk.cpf.ca", keywords: ["french immersion", "language learning", "french", "bilingual", "esl", "conversational", "languages"] },
+            { title: "ESL Support Network", name: "ELL Excellence Learning Portals", subject: "ESL Syntax Building, Academic Vocabulary & Fluency Tools", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "BC Association of Teachers of English as an Additional Language", location: "Online Reference Resource Database", eligibility: "Free Public Direct Access", area: "ESL", broadArea: "Cultural & Language Programs", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.bcteal.org", keywords: ["esl", "ell", "english learning", "language learning", "vocabulary", "grammar", "international students"] },
+
+            // --- SPORTS & ADVENTURE ---
+            { title: "Football League", name: "Football BC Youth Development", subject: "American Football Leagues & Camps", grades: "4,5,6,7,8,9,10,11,12", organizer: "BC Provincial Football Association", location: "Community Fields", eligibility: "Open to youth flag and tackle athletes", area: "American Football", broadArea: "Sports & Adventure", category: "Extracurriculars, Clubs and Volunteer Opportunities", matchLevel: "Best", link: "https://www.footballbc.ca", keywords: ["american football", "football", "flag football", "tackle", "gridiron", "sports", "athletics", "bcpfa", "touchdown", "quarterback"] },
+            { title: "Tennis Clinic", name: "Tennis BC Community Clinics", subject: "Tennis Performance and Development", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Tennis BC Association", location: "Regional Indoor/Outdoor Courts", eligibility: "All experience tiers", area: "Racquet Athletics", broadArea: "Sports & Adventure", category: "Extracurriculars, Clubs and Volunteer Opportunities", matchLevel: "Best", link: "https://www.tennisbc.org", keywords: ["tennis", "racquet", "courts", "tennis bc", "junior tennis", "sports", "fitness", "athletics", "match play", "lessons"] },
+            { title: "World Cup Legacy", name: "FIFA World Cup Youth Legacy Circuits", subject: "Global Soccer Integration & FIFA Clinics", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "BC Soccer / FIFA Legacy Committee vancouver", location: "BC Place Stadium Nodes", eligibility: "Community registration networks", area: "Elite Soccer Development", broadArea: "Sports & Adventure", category: "Competitions/Contests and Challenge Opportunities", matchLevel: "Best", link: "https://www.bcsoccer.net", keywords: ["fifa world cup", "fifa", "world cup", "soccer", "vancouver 2026", "football tournament", "elite soccer", "sports matches", "stadium"] },
+            { title: "Basketball League", name: "Basketball BC Junior Development", subject: "Basketball Tactics, Dribbling Drills & Tournament Play", grades: "3,4,5,6,7,8,9,10,11,12", organizer: "Basketball BC", location: "Regional Community Gymnasiums", eligibility: "Youth Division Placements", area: "Basketball", broadArea: "Sports & Adventure", category: "Extracurriculars, Clubs and Volunteer Opportunities", matchLevel: "Best", link: "https://www.basketballbc.ca", keywords: ["basketball", "hoops", "sports", "fitness", "exercise", "athletics", "team sports"] },
+            { title: "Volleyball Spikes Academy", name: "Volleyball BC Youth Club Circuit", subject: "Volleyball Serves, Agility Positioning & Tournaments", grades: "5,6,7,8,9,10,11,12", organizer: "Volleyball BC", location: "Regional Gyms & Beach Courts", eligibility: "School age athletes", area: "Volleyball Performance", broadArea: "Sports & Adventure", category: "Extracurriculars, Clubs and Volunteer Opportunities", matchLevel: "Best", link: "https://www.volleyballbc.org", keywords: ["volleyball", "sports", "serving", "spiking", "team sports", "fitness", "athletics", "exercise"] },
+            { title: "Aquatic Safety & Training", name: "Swim BC Provincial Development", subject: "Swimming Stroke Mechanics & Aquatic Endurance", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Swim BC", location: "Municipal Aquatic Centers", eligibility: "Junior and youth swimmers", area: "Swimming", broadArea: "Sports & Adventure", category: "Extracurriculars, Clubs and Volunteer Opportunities", matchLevel: "Best", link: "https://www.swimbc.ca", keywords: ["swimming", "swim", "aquatics", "pool", "sports", "fitness", "exercise", "water safety"] },
+
+            // --- EQUITY & ACCESS ---
+            { title: "Assistive Technology", name: "Special Education Technology BC (SET-BC)", subject: "Special Education Accommodations, Neurodivergent Support Infrastructure", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "BC Provincial School Board Initiative", location: "Distributed Learning Nodes", eligibility: "Identified neurodivergent or physically challenged students", area: "Disability & Accessibility", broadArea: "Equity & Access", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.setbc.org", keywords: ["special education", "neurodivergent", "disability", "accessibility", "equity", "assistive", "autism", "adhd", "dyslexia", "inclusion"] },
+            { title: "Financial Aid Database", name: "BC Student Aid Grant Calculator", subject: "Financial Support, Low-Income Subsidies & Resource Allocation", grades: "10,11,12", organizer: "StudentAid BC", location: "Online Portal System", eligibility: "BC Residence status validation", area: "Financial Support", broadArea: "Equity & Access", category: "Financial Awards and Support", matchLevel: "Best", link: "https://studentaidbc.ca", keywords: ["financial support", "money", "grants", "low income", "subsidies", "equity", "bursary", "student aid"] },
+            { title: "Neurodivergent Learning", name: "POPARD Autism Support Matrix", subject: "Autism Learning Pathways & Behavioral Support Models", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Provincial Outreach Program for Autism and Related Disorders", location: "Province-wide Resource Portal", eligibility: "Educators, Parents and Neurodivergent Learners", area: "Neurodivergent Resources", broadArea: "Equity & Access", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://autismoutreach.ca", keywords: ["neurodivergent resources", "autism", "popard", "special education", "adhd", "sensory learning", "accessibility"] },
+
+            // --- MULTIPLE AREAS K-12 ---
+            { title: "Distributed Curricula Hub", name: "BC Open Remote Learning Classrooms", subject: "School Boards homework networks, Remote Curricula Models", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Ministry Alternative Learning Streams", location: "Online Infrastructure", eligibility: "Open to distance and remote education enrollees", area: "Alternative Learning Models", broadArea: "Multiple Areas K-12", category: "Enrichment/Alternative Courses and Programs", matchLevel: "Best", link: "https://www2.gov.bc.ca/gov/content/education-training/k-12/support/classroom-alternatives", keywords: ["school boards", "homework help sites", "remote curricula", "alternative learning models", "online school", "distance learning", "home schooling"] },
+            { title: "Homework Support Link", name: "OpenSchool BC Learning Shell", subject: "Homework Help Sites & Interactive Practice Modules", grades: "1,2,3,4,5,6,7,8,9,10,11,12", organizer: "Ministry of Education Content Delivery", location: "Online Web Learning Network", eligibility: "Free Public Enrolment Access", area: "Homework Help Sites", broadArea: "Multiple Areas K-12", category: "Free Learning and Enrichment Resources", matchLevel: "Best", link: "https://www.openschool.bc.ca", keywords: ["homework help sites", "school boards", "remote curricula", "study guide", "tutoring", "math help", "science help"] }
+        ];
+
+        // 2. Text Rotation Subroutine
+        const rotationTerms = document.querySelectorAll('.words-stack .word');
+        let termIndex = 0;
+
+        function runTermRotation() {
+            rotationTerms[termIndex].classList.remove('active');
+            termIndex = (termIndex + 1) % rotationTerms.length;
+            rotationTerms[termIndex].classList.add('active');
+        }
+        setInterval(runTermRotation, 2500);
+
+        // 3. Interface Display Calculation Helper
+        function executeInterfaceRealignment() {
+            const targetContainer = document.getElementById('content');
+            if (targetContainer) {
+                targetContainer.classList.add('visible');
+            }
+        }
+
+        window.addEventListener('load', executeInterfaceRealignment);
+
+        // 4. SPA Client Router Module
+        function switchActiveView(viewTargetId) {
+            document.querySelectorAll('.view-panel').forEach(panel => {
+                panel.classList.remove('active-panel');
+            });
+            document.querySelectorAll('.mainmenu .menuelement').forEach(navItem => {
+                navItem.classList.remove('active');
+            });
+            const targetedPanel = document.getElementById(`view-${viewTargetId}`);
+            const targetedNav = document.getElementById(`nav-${viewTargetId}`);
+            
+            if(targetedPanel) targetedPanel.classList.add('active-panel');
+            if(targetedNav) targetedNav.classList.add('active');
+
+            executeInterfaceRealignment();
+        }
+
+        // Filter Checkbox Helper Method
+        function update_children(element) {
+            console.log("Selected filter status:", element.id, element.checked);
+        }
+
+        // Helper function to build dynamic data cards
+        function renderResourceCards(items, containerElement) {
+            if (items.length === 0) {
+                containerElement.innerHTML = `<p class="no-results">No specific assets found. Try searching general targets like "math", "reading", "basketball", "robotics", "cooking", or "volunteer".</p>`;
+                return;
+            }
+
+            containerElement.innerHTML = items.map(item => `
+                <div class="resource-card">
+                    <h2>${item.title}</h2>
+                    <p><strong>Resource Name:</strong> ${item.name}</p>
+                    <p><strong>Subject/criteria:</strong> ${item.subject}</p>
+                    <p><strong>Grades:</strong> ${item.grades}</p>
+                    <p><strong>Organizer:</strong> ${item.organizer}</p>
+                    <p><strong>Organizer Location:</strong> ${item.location}</p>
+                    <p><strong>Eligibility:</strong> ${item.eligibility}</p>
+                    <p><strong>Area:</strong> ${item.area}</p>
+                    <p><strong>Broad Area:</strong> ${item.broadArea}</p>
+                    <p><strong>Resource Category:</strong> ${item.category}</p>
+                    <p><strong>Match Level:</strong> ${item.matchLevel}</p>
+                    <p><strong>Link To Resource:</strong> <a href="${item.link}" target="_blank" class="resource-link">${item.link}</a></p>
+                </div>
+            `).join('');
+        }
+
+        // 5. Broad Search Engine Logic Integration
+        document.getElementById('broadSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const rawQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('searchResults');
+            
+            const matches = RESOURCE_DATABASE.filter(item => {
+                return item.keywords.some(kw => rawQuery.includes(kw) || kw.includes(rawQuery)) ||
+                       item.name.toLowerCase().includes(rawQuery) ||
+                       item.subject.toLowerCase().includes(rawQuery) ||
+                       item.title.toLowerCase().includes(rawQuery) ||
+                       item.area.toLowerCase().includes(rawQuery) ||
+                       item.category.toLowerCase().includes(rawQuery);
+            });
+            
+            renderResourceCards(matches, resultsContainer);
+        });
+
+        // 6. Focused Search implementation mapping form states to query results
+        document.getElementById('focusedSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const focusedResults = document.getElementById('focusedSearchResults');
+            const selectedGrades = Array.from(document.querySelectorAll('input[name="grade"]:checked')).map(cb => cb.value);
+            const selectedTypes = Array.from(document.querySelectorAll('input[name="type"]:checked')).map(cb => cb.value);
+            const selectedSubjects = Array.from(document.querySelectorAll('input[name="subject"]:checked')).map(cb => cb.value);
+
+            const matches = RESOURCE_DATABASE.filter(item => {
+                const matchesSubject = selectedSubjects.length === 0 || selectedSubjects.includes(item.broadArea);
+                const matchesType = selectedTypes.length === 0 || selectedTypes.includes(item.category);
+                
+                const matchesGrade = selectedGrades.length === 0 || selectedGrades.some(grade => {
+                    const gradeList = item.grades.split(',');
+                    return gradeList.includes(grade);
+                });
+                return matchesSubject && matchesType && matchesGrade;
+            });
+
+            renderResourceCards(matches, focusedResults);
+        });
+
+        // Default initial pre-population state on app startup
+        window.addEventListener('DOMContentLoaded', () => {
+            const initialQueryMatches = RESOURCE_DATABASE.filter(item => item.keywords.includes("cooking") || item.keywords.includes("volunteer"));
+            renderResourceCards(initialQueryMatches, document.getElementById('searchResults'));
+        });
+    </script>
+</body>
+</html>
